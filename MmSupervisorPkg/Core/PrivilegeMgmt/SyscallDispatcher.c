@@ -483,15 +483,13 @@ SyscallDispatcher (
       if (!AmIBsp ()) {
         // AP allocating pages will involve updating page tables, which is a rabbit hole we should not drill...
         Status = EFI_ACCESS_DENIED;
-      } else if (Arg2 == EfiRuntimeServicesData) {
+      } else if (Arg2 == EfiRuntimeServicesData || Arg2 == EfiRuntimeServicesCode) {
         Status = MmAllocatePages (
                    (EFI_ALLOCATE_TYPE)Arg1,
                    (EFI_MEMORY_TYPE)Arg2,
                    (UINTN)Arg3,
                    (EFI_PHYSICAL_ADDRESS *)&Ret
                    );
-      } else if (Arg2 == EfiRuntimeServicesCode) {
-        Status = EFI_UNSUPPORTED;
       } else {
         Status = EFI_INVALID_PARAMETER;
       }
